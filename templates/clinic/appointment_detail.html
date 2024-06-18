@@ -1,0 +1,10 @@
+{% extends 'clinic/_detail.html' %}
+
+{% block detail_content %}
+  <p>Доктор: {{ appointment.doctor.user.username }}</p>
+  <p>Пациент: {{ appointment.patient.user.username }}</p>
+  <p>Дата приема: {{ appointment.date }}</p>
+  <p>Время приема: {{ appointment.time }}</p>
+  <p>Статус: {{ appointment.status }}</p>
+
+{% endblock %}

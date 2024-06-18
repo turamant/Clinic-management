@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="bg-white rounded-lg shadow-md p-8">
+        {% if post.image %}
+            <img src="{{ doctor.image.url }}" alt="{{ doctor }}" class="max-w-full h-auto mb-4">
+        {% endif %}
+        <h1 class="text-3xl font-bold mb-4">{{ doctor }}</h1>
+        <div class="flex justify-between items-center text-gray-500 mb-4">
+            <p>Имя: {{ doctor }}</p>
+            <p>Дата рождения: {{ doctor.birth_date }}</p>
+        </div>
+            <p class="text-lg mb-8">{{ doctor.specialization }}</p>
+        <div class="flex justify-end">
+            {% if user.is_staff %}
+                <a href="{% url 'blog:post_update' post.pk %}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mr-2">
+                    Edit
+                </a>
+                <a href="{% url 'blog:post_delete' post.pk %}" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
+                    Delete
+                </a>
+            {% endif %}
+        </div>
+<div class="container mx-auto my-8">
+    <h1 class="text-2xl font-bold mb-4 text-center">Appointment List</h1>
+        <div class="overflow-x-auto">
+            <table class="w-full table-auto">
+                <thead>
+                      <tr class="bg-gray-200">
+                        <th class="px-4 py-2 text-center">Пациент</th>
+                        <th class="px-4 py-2 text-center">Дата</th>
+                        <th class="px-4 py-2 text-center">Время</th>
+                        <th class="px-4 py-2 text-center">Статус</th>
+                      </tr>
+                </thead>
+                <tbody>
+                      {% for appointment in appointments %}
+                        <tr class="border-b">
+                          <td class="px-4 py-2 text-center">
+                              <a
+                                      href="{% url 'clinic:patient_detail' appointment.patient.pk %}"
+                                      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                      {{ appointment.patient.user.username }}
+                              </a>
+                          </td>
+                          <td class="px-4 py-2 text-center">{{ appointment.date }}</td>
+                          <td class="px-4 py-2 text-center">{{ appointment.time }}</td>
+                          <td class="px-4 py-2 text-center">{{ appointment.status }}</td>
+                        </tr>
+                      {% endfor %}
+                </tbody>
+            </table>
+        </div>
+</div>
+
+        <div class="container mx-auto my-8">
+        <h1 class="text-2xl font-bold mb-4 text-center">Расписание</h1>
+        <div class="overflow-x-auto">
+            <table class="w-full table-auto">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="px-4 py-2 text-center">Дата</th>
+                        <th class="px-4 py-2 text-center">Время</th>
+                        <th class="px-4 py-2 text-center">Запись</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for schedule in doctor_schedule %}
+                    <tr class="border-b">
+                        <td class="px-4 py-2 text-center">{{ schedule.date }}</td>
+                        <td class="px-4 py-2 text-center">{{ schedule.start_time }} - {{ schedule.end_time }}</td>
+                        <td class="px-4 py-2 text-center">
+                            {% if schedule.is_available %}
+                                <a href="{% url 'clinic:appointment_create' schedule.pk %}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                                    Записаться
+                                </a>
+                            {% else %}
+                                Занято
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+        <h2 class="text-2xl font-bold mb-4">Comments</h2>
+        {% if comments %}
+            <div class="space-y-4">
+                {% for comment in comments %}
+                    <div class="bg-gray-100 rounded-lg p-4">
+                        <p class="text-gray-500 mb-2">{{ comment.author }} - {{ comment.created_date }}</p>
+                        <p>{{ comment.content }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No comments yet.</p>
+        {% endif %}
+
+        <h2 class="text-2xl font-bold mt-8 mb-4">Add Comment</h2>
+        {% if user.is_authenticated %}
+        <form method="post" action="{% url 'blog:post_detail' post.id %}" class="space-y-4">
+    {% csrf_token %}
+    {{ comment_form.as_p }}
+    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        Submit
+    </button>
+</form>
+    </div>
+{% else %}
+<p>Зарегистрируйтесь или авторизуйтесь, чтобы комментировать!</p>
+
+<a href="{% url 'accounts:register' %}" class="hover:bg-blue-700">Register </a>|
+<a href="{% url 'accounts:login' %}" class="hover:bg-blue-700"> Login</a>
+{% endif %}
+{% endblock %}

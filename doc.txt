@@ -1,0 +1,102 @@
+Модели Django
+
+            User:
+                username
+                password
+                email
+                phone
+                role (врач, пациент, администратор)
+
+            Doctor:
+                user (OneToOneField на User)
+                specialization
+
+            Patient:
+                user (OneToOneField на User)
+                medical_history
+
+            Appointment:
+                date
+                time
+                doctor (ForeignKey на Doctor)
+                patient (ForeignKey на Patient)
+                status (ожидает, принят, отменен)
+
+            MedicalRecord:
+                patient (ForeignKey на Patient)
+                doctor (ForeignKey на Doctor)
+                date
+                description
+
+Представления (Views)
+            Аутентификация:
+                LoginView
+                RegisterView
+
+            Профили:
+                DoctorProfileView
+                PatientProfileView
+
+            Планирование приёмов:
+                AppointmentCalendarView
+                AppointmentCreateView
+                AppointmentUpdateView
+                AppointmentListView
+
+            Медицинские карты:
+                MedicalRecordListView
+                MedicalRecordCreateView
+                MedicalRecordUpdateView
+
+Административная панель:
+            AdminDashboardView
+            UserManagementView
+            DoctorManagementView
+            PatientManagementView
+
+Шаблоны (Templates)
+            Аутентификация:
+                login.html
+                register.html
+
+            Профили:
+                doctor_profile.html
+                patient_profile.html
+
+            Планирование приёмов:
+                appointment_calendar.html
+                appointment_create.html
+                appointment_update.html
+                appointment_list.html
+
+            Медицинские карты:
+                medical_record_list.html
+                medical_record_create.html
+                medical_record_update.html
+
+            Административная панель:
+                admin_dashboard.html
+                user_management.html
+                doctor_management.html
+                patient_management.html
+
+Дополнительные функции
+            Напоминания:
+                Использование сигналов Django для отправки напоминаний пациентам о предстоящих
+                приёмах.
+
+            Интеграция платежей:
+                Использование сторонних платёжных шлюзов, таких как Yandex.
+
+            Уведомления:
+                Использование Django Channels или другого инструмента для реализации системы
+                уведомлений в реальном времени.
+
+            Функция поиска:
+                Использование Django ORM и полнотекстового поиска для реализации функции
+                поиска.
+
+            Безопасность:
+                Использование Django's built-in security features, таких как защита от CSRF,
+                 XSS и других атак.
+                Реализация двухфакторной аутентификации.

@@ -1,0 +1,8 @@
+{% extends 'clinic/_detail.html' %}
+
+{% block detail_content %}
+  <p>Название: {{ clinic.name }}</p>
+  <p>Адрес: {{ clinic.address }}</p>
+  <p>Телефон: {{ clinic.phone }}</p>
+  <p>Email: {{ clinic.email }}</p>
+{% endblock %}

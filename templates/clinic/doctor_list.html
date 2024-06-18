@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Doctor List{% endblock %}
+
+{% block content %}
+    <div class="container mx-auto my-8">
+        <h1 class="text-2xl font-bold mb-4">Doctor List</h1>
+        <div class="overflow-x-auto">
+            <table class="w-full table-auto">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="px-4 py-2">Name</th>
+                        <th class="px-4 py-2">BirthDate</th>
+                        <th class="px-4 py-2">Gender</th>
+                        <th class="px-4 py-2">Email</th>
+                        <th class="px-4 py-2">Phone</th>
+                        <th class="px-4 py-2">Специализация</th>
+                        <th class="px-4 py-2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for doctor in doctors %}
+                        <tr class="border-b">
+                            <td class="px-4 py-2"><a href="{% url 'clinic:doctor_detail' doctor.pk %}">{{ doctor.user.username }}</a></td>
+                            <td class="px-4 py-2">{{ doctor.user.birth_date }}</td>
+                            <td class="px-4 py-2">{{ doctor.user.gender }}</td>
+                            <td class="px-4 py-2">{{ doctor.user.email }}</td>
+                            <td class="px-4 py-2">{{ doctor.user.phone }}</td>
+                            <td class="px-4 py-2">{{ doctor.specialization }}</td>
+                            <td class="px-4 py-2">
+                                <a href="{% url 'clinic:doctor_update' doctor.pk %}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mr-2">Edit</a>
+                                <a href="{% url 'clinic:doctor_delete' doctor.pk %}" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">Delete</a>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="7" class="px-4 py-2 text-center">No patients found.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <a href="{% url 'clinic:doctor_create' %}" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded mt-4 inline-block">Add Patient</a>
+    </div>
+{% endblock %}
